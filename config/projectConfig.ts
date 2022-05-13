@@ -1,35 +1,35 @@
 const projectConfig = {
-  nftName: 'SkullsInLove',
+  nftName: 'Beach Bums',
 
-  nftSymbol: 'SIL',
+  nftSymbol: 'BUMS',
 
-  maxSupply: 10000,
+  maxSupply: 700,
 
   maxMintAmountPerTxn: 10,
 
-  mintCost: process.env.NODE_ENV === 'production' ? 100 : 0.01,
+  mintCost: process.env.NODE_ENV === 'production' ? 100 : 0.10,
 
   networkName:
     process.env.NODE_ENV === 'production'
-      ? 'Polygon Mainnet' // 'Ethereum Mainnet'
+      ? 'Hard Hat' // 'Ethereum Mainnet'
       : 'Mumbai Testnet', // 'Rinkeby Testnet'
 
-  chainName: 'MATIC', // 'ETH'
+  chainName: 'Go', // 'ETH'
 
-  chainId: process.env.NODE_ENV === 'production' ? 137 : 80001, // Ethereum (1), Rinkeby (4)
+  chainId: process.env.NODE_ENV === 'production' ? 31337 : 31337, // Ethereum (1), Rinkeby (4)
 
-  siteDomain: 'www.yourdomain.com',
+  siteDomain: 'www.hodlercon.com',
 
   siteUrl:
     process.env.NODE_ENV === 'production'
       ? `https://your_site_domain`
       : 'http://localhost:3000',
 
-  twitterUsername: '@your_twitter_handle',
+  twitterUsername: '@Hodlercon',
 
-  twitterUrl: 'https://twitter.com/your_twitter_handle',
+  twitterUrl: 'https://twitter.com/hodlercon',
 
-  discordUrl: 'https://discord.gg/your_discord_invite_code',
+  discordUrl: 'https://discord.gg/DaPhpKrU',
 
   openseaCollectionUrl:
     process.env.NODE_ENV === 'production'
@@ -38,8 +38,8 @@ const projectConfig = {
 
   contractAddress:
     process.env.NODE_ENV === 'production'
-      ? 'your_mainnet_contract_address'
-      : 'your_testnet_contract_address',
+      ? '0xdc64a140aa3e981100a9beca4e685f962f0cf6c9'
+      : '0xdc64a140aa3e981100a9beca4e685f962f0cf6c9',
 
   scanUrl:
     process.env.NODE_ENV === 'production'

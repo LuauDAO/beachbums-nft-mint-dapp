@@ -17,10 +17,10 @@ const Home: NextPage = () => {
       <Head>
         <title>{projectConfig.nftName}</title>
       </Head>
-
+      <center>
       <Image src={topImage} alt={projectConfig.nftName} />
-
-      <div className="bg-gray-800 py-8">
+      </center>
+      <div className="bg-gray-800 py-8"  style={{backgroundColor: '#5e42a6'}} >
         <Prose>
           <h1 className="text-5xl font-bold mb-2">{projectConfig.nftName}</h1>
           <p className="text-xl">
@@ -35,25 +35,25 @@ const Home: NextPage = () => {
         </Prose>
       </div>
 
-      <div className="py-8">
+      <div className="py-8" style={{backgroundColor: '#5052b5'}}>
         <Prose>
           <Minting />
         </Prose>
       </div>
 
-      <div className="bg-gray-800 py-8">
+      <div className="bg-gray-800 py-8" style={{backgroundColor: '#3e4094'}} >
         <Prose>
           <Faq />
         </Prose>
       </div>
 
-      <div className="py-8">
+      <div className="py-8"  >
         <Prose>
           <Roadmap />
         </Prose>
       </div>
 
-      <div className="bg-gray-800 py-8">
+      <div className="bg-gray-800 py-8" style={{backgroundColor: '#493382'}}>
         <Prose>
           <Team />
         </Prose>

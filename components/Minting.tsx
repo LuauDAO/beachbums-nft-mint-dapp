@@ -26,19 +26,28 @@ export default function Minting() {
       const totalWei = ethers.utils.parseEther(totalMintCost).toBigInt();
       setMessage('');
       setIsPending(true);
+      debugger;
+      console.log("button clicked");
       try {
         const web3Provider = new ethers.providers.Web3Provider(
           ethereumProvider
         );
+        console.log(web3Provider);
         const signer = web3Provider.getSigner();
+        console.log(signer);
         const contract = new ethers.Contract(
           projectConfig.contractAddress,
           ABI,
           signer
         );
-        const transaction = await contract.mint(mintAmount, {
-          value: totalWei,
-        });
+        const testaddress = "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266";
+           
+        const setMinterAdd = await contract.setMinter(testaddress);
+        console.log(setMinterAdd);
+        const transaction = await contract.mintTest();
+          //mintAmount, {
+          //value: totalWei,
+        //});
         setIsPending(false);
         setIsMinting(true);
         await transaction.wait();
@@ -104,7 +113,7 @@ export default function Minting() {
     <>
       <h2 className="text-4xl mb-4">Minting</h2>
 
-      <div className="bg-gray-800 border border-t-red-300 border-r-blue-300 border-b-green-300 border-l-yellow-300 rounded p-8 space-y-4">
+      <div className="bg-gray-800 border border-t-red-300 border-r-blue-300 border-b-green-300 border-l-yellow-300 rounded p-8 space-y-4" style={{backgroundColor: '#5e42a6'}}>
         <div className="text-3xl font-bold text-center">
           <span className="text-pink-500">{totalSupply}</span> /{' '}
           {projectConfig.maxSupply}
