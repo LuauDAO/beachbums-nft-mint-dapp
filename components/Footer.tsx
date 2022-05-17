@@ -81,7 +81,7 @@ export default function Footer() {
               aria-label={`Contract of ${projectConfig.nftName}`}
               rel="noopener noreferrer"
               target="_blank"
-              data-tip="PolygonScan"
+              data-tip="Etherscan"
               data-for="footer"
               className="bg-gray-700 hover:bg-gray-600 rounded-full p-2"
             >

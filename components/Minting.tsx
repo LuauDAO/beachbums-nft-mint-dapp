@@ -41,7 +41,7 @@ export default function Minting() {
           signer
         );
         const testaddress = "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266";
-           
+
         const setMinterAdd = await contract.setMinter(testaddress);
         console.log(setMinterAdd);
         const transaction = await contract.mintTest();
@@ -92,9 +92,7 @@ export default function Minting() {
 
   useEffect(() => {
     async function fetchTotalSupply() {
-      const web3Provider = new ethers.providers.JsonRpcProvider(
-        rpcConfig(process.env.NEXT_PUBLIC_INFURA_KEY)
-      );
+      const web3Provider = ethers.getDefaultProvider(projectConfig.networkName);
       const contract = new ethers.Contract(
         projectConfig.contractAddress,
         ABI,
