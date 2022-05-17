@@ -1,6 +1,6 @@
 import { MerkleTree } from 'merkletreejs';
 import keccak256 from 'keccak256';
-import recipients from '../config/recipients.json';
+import config_recipients from '../config/recipients.json';
 import { ethers } from 'ethers';
 
 function hashAddress(account: string): Buffer {
@@ -10,13 +10,14 @@ function hashAddress(account: string): Buffer {
   );
 }
 
-export function getMerkleTree(): MerkleTree {
-  recipients.forEach((a) => {
+export function getMerkleTree(recipients?: string[]): MerkleTree {
+  const leafs = recipients || config_recipients;
+  leafs.forEach((a) => {
     if (!ethers.utils.isAddress(a))
-      throw `Merkle Recipients: ${a} is an invalid account`;
+      throw new Error(`Merkle Recipients: ${a} is an invalid account`);
   });
 
-  return new MerkleTree(recipients.map(hashAddress), keccak256, {
+  return new MerkleTree(leafs.map(hashAddress), keccak256, {
     sortPairs: true,
   });
 }
