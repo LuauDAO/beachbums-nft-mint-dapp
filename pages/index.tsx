@@ -9,7 +9,7 @@ import Faq from '../components/Faq';
 import Roadmap from '../components/Roadmap';
 import Team from '../components/Team';
 import projectConfig from '../config/projectConfig';
-import topImage from '../public/assets/1920x600.png';
+import topImage from '../public/assets/1920x600_cropped.png';
 import Redeem from '../components/Redeem';
 
 const Home: NextPage = () => {

@@ -3,12 +3,12 @@ const projectConfig = {
   nftSymbol: 'BUMS',
   maxSupply: 700,
   maxMintAmountPerTxn: 10,
-  mintCost: process.env.NODE_ENV === 'production' ? 100 : 0.10,
+  mintCost: process.env.NODE_ENV === 'production' ? 0.10 : 0.10,
 
   networkName:
     process.env.NODE_ENV === 'production'
-      ? ''
-      : 'mainnet',
+      ? 'homestead'
+      : 'hardhat',
 
   chainName: 'ETH',
 
