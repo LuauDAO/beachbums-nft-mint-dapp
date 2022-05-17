@@ -17,10 +17,10 @@ const Home: NextPage = () => {
       <Head>
         <title>{projectConfig.nftName}</title>
       </Head>
-      <center>
-      <Image src={topImage} alt={projectConfig.nftName} />
-      </center>
-      <div className="bg-gray-800 py-8"  style={{backgroundColor: '#5e42a6'}} >
+      <div>
+        <Image src={topImage} alt={projectConfig.nftName}/>
+      </div>
+      <div className="bg-gray-800 py-8" style={{backgroundColor: '#5e42a6'}} >
         <Prose>
           <h1 className="text-5xl font-bold mb-2">{projectConfig.nftName}</h1>
           <p className="text-xl">
