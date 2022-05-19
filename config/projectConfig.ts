@@ -1,5 +1,6 @@
 const projectConfig = {
   nftName: 'Beach Bums',
+  nftCreator: 'Luau DAO',
   nftSymbol: 'BUMS',
   maxSupply: 700,
   maxMintAmountPerTxn: 10,

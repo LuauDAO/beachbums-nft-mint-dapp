@@ -19,7 +19,11 @@ export default function Faq() {
           </p>
         <h3 className="text-2xl mb-2">Is there a resale fee?</h3>
           <p>
-          Thats a good question. Add that info here.
+          Each resale comes with a 5% fee that goes to the Luau DAO treasury for use in future events.
+          </p>
+        <h3 className="text-2xl mb-2">Any special shout outs?</h3>
+          <p>
+          Beach Bums were developed with consultation from LookingForOwls of ShuffleDAO with radical artwork from the mind of Logic_Beach. 
           </p>
         </div>
       </div>
