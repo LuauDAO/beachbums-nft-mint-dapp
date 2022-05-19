@@ -28,14 +28,16 @@ export default function Redeem() {
   async function redeemNFTs() {
     if (account && ethereumProvider) {
       setMessage('');
+      console.log("Redeeming Beach Bum")
       setIsPending(true);
       try {
         const web3Provider = new ethers.providers.Web3Provider(ethereumProvider);
         const signer = web3Provider.getSigner();
+        console.log("Contract Address: ", projectConfig.contractAddress)
         const contract = new ethers.Contract(projectConfig.contractAddress, ABI, signer);
-        const setRedeemerAdd = await contract.setRedeemer(account);
-        console.log(setRedeemerAdd);
-        const transaction = await contract.redeemTest();
+        console.log("Calling Redeem");
+        const proof = computeProof(merkleTree, account || '');
+        const transaction = await contract.redeem(account, proof);
         setIsPending(false);
         setIsRedeeming(true);
         await transaction.wait();
@@ -64,6 +66,7 @@ export default function Redeem() {
   function fetchMerkleProof() {
     const proof = computeProof(merkleTree, account || '');
     setIsEligible(proof.length > 0);
+    console.log(isEligible? "Account is eligible to redeem a free Beach Bum" : "Account is not eligible to redeem a free Beach Bum");
     setMerkleProof(proof);
   }
 
@@ -83,7 +86,7 @@ export default function Redeem() {
         }
       }
     }
-  }, [active, chainId]);
+  }, [active, chainId, account, isEligible]);
 
   return (
     <>
