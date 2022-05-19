@@ -17,20 +17,12 @@ const Home: NextPage = () => {
       <Head>
         <title>{projectConfig.nftName}</title>
       </Head>
-      <center>
       <Image src={topImage} alt={projectConfig.nftName} />
-      </center>
       <div className="bg-gray-800 py-8"  style={{backgroundColor: '#5e42a6'}} >
         <Prose>
           <h1 className="text-5xl font-bold mb-2">{projectConfig.nftName}</h1>
           <p className="text-xl">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
+          Meet the Beach Bums, the newest residents of the tropical metaverse and your key to shaping the future of HodlerCon. Collect your own Beach Bum NFT when you register for HodlerCon 2022 and are added to the whitelist for a no-fee mint. There is a limited 700 public supply with a mint cost for non-HodlerCon attendees of 0.1 ETH with 100% on chain for max decentralization. Each Beach Bum provides you a vote to shape the future of Luau DAO and it&apos;s upcoming HodlerCon events.
           </p>
         </Prose>
       </div>

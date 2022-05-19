@@ -3,6 +3,7 @@ export default function Roadmap() {
     <>
       <h2 className="text-4xl mb-4">Roadmap</h2>
       <ul className="list-disc pl-5 space-y-2 mb-4">
+        <h3>May 2022 - Launch</h3>
         <li>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
@@ -12,6 +13,7 @@ export default function Roadmap() {
           pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
           culpa qui officia deserunt mollit anim id est laborum.
         </li>
+        <h3>Fall 2022 - Hold vote on next HodlerCon location</h3>
         <li>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
