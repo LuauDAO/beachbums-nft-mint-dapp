@@ -92,19 +92,20 @@ export default function Minting() {
 
   useEffect(() => {
     async function fetchTotalSupply() {
-      const web3Provider = ethers.getDefaultProvider(projectConfig.networkName);
-      const contract = new ethers.Contract(
-        projectConfig.contractAddress,
-        ABI,
-        web3Provider
-      );
-      setTotalSupply((await contract.totalSupply()).toString());
+      if(ethereumProvider) {
+        const web3Provider = new ethers.providers.Web3Provider(ethereumProvider);
+        const contract = new ethers.Contract(
+          projectConfig.contractAddress,
+          ABI,
+          web3Provider
+        );
+        setTotalSupply((await contract.totalSupply()).toString());
+      } else {
+        setTotalSupply('?');
+      }
     }
 
     fetchTotalSupply();
-
-    // cleanup
-    return () => setTotalSupply('?');
   }, []);
 
   return (

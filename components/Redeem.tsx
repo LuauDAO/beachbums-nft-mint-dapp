@@ -3,6 +3,7 @@ import { useWeb3React } from '@web3-react/core';
 import { ethers } from 'ethers';
 import { IconContext } from 'react-icons';
 import { FaMinusCircle, FaPlusCircle } from 'react-icons/fa';
+import { getMerkleTree, computeProof } from '../utils/merkle';
 
 import ABI from '../config/abi.json';
 import rpcConfig from '../config/rpcConfig';
@@ -19,22 +20,20 @@ export default function Redeem() {
   const [isPending, setIsPending] = useState(false);
   const [isRedeeming, setIsRedeeming] = useState(false);
   const [redeemAmount, setRedeemAmount] = useState(1);
+  const [isEligible, setIsEligible] = useState(false);
+  const [contractMerkleRoot, setContractMerkleRoot] = useState("");
+  const [merkleProof, setMerkleProof] = useState<string[]>([]);
+  const merkleTree = getMerkleTree();
 
   async function redeemNFTs() {
     if (account && ethereumProvider) {
       setMessage('');
       setIsPending(true);
-      debugger;
-      console.log('button clicked');
       try {
         const web3Provider = new ethers.providers.Web3Provider(ethereumProvider);
-        console.log(web3Provider);
         const signer = web3Provider.getSigner();
-        console.log(signer);
         const contract = new ethers.Contract(projectConfig.contractAddress, ABI, signer);
-        const testaddress = account; // TODO Needs to be set to wallet address
-
-        const setRedeemerAdd = await contract.setRedeemer(testaddress);
+        const setRedeemerAdd = await contract.setRedeemer(account);
         console.log(setRedeemerAdd);
         const transaction = await contract.redeemTest();
         setIsPending(false);
@@ -53,14 +52,35 @@ export default function Redeem() {
     }
   }
 
+  async function fetchContractData() {
+    if(ethereumProvider) {
+      const web3Provider = new ethers.providers.Web3Provider(ethereumProvider);
+      const contract = new ethers.Contract(projectConfig.contractAddress, ABI, web3Provider);
+      const merkleRoot = (await contract.root()).toString();
+      setContractMerkleRoot(merkleRoot);
+    }
+  }
+
+  function fetchMerkleProof() {
+    const proof = computeProof(merkleTree, account || '');
+    setIsEligible(proof.length > 0);
+    setMerkleProof(proof);
+  }
+
   useEffect(() => {
     if (!active) {
       setConnErrMsg('Not connected to your wallet.');
     } else {
+      fetchContractData();
+      fetchMerkleProof();
       if (chainId !== projectConfig.chainId) {
         setConnErrMsg(`Change the network to ${projectConfig.networkName}.`);
       } else {
-        setConnErrMsg('');
+        if(!isEligible) {
+          setConnErrMsg('This address is not eligible to redeem. Public mint is below!');
+        } else {
+          setConnErrMsg('');
+        }
       }
     }
   }, [active, chainId]);
