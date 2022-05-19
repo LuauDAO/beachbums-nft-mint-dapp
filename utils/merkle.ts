@@ -21,10 +21,7 @@ export function getMerkleTree(recipients?: string[]): MerkleTree {
 
   return new MerkleTree(
     leafs.map((account) => hashAddress(account)),
-    keccak256,
-    {
-      sortPairs: true,
-    }
+    keccak256
   );
 }
 

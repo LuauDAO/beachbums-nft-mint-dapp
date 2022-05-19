@@ -23,9 +23,12 @@ describe('Merkle Tree', () => {
 
   describe('computeProof', () => {
     it('should compute proof for valid account', () => {
-      const account = '0x70997970c51812dc3a010c7d01b50e0d17dc79c8';
-      const tree = getMerkleTree([account]);
-      const proof = computeProof(tree, account);
+      const accounts = [
+        '0x70997970c51812dc3a010c7d01b50e0d17dc79c8',
+        '0x00000000219ab540356cBB839Cbe05303d7705Fa',
+      ];
+      const tree = getMerkleTree(accounts);
+      const proof = computeProof(tree, accounts[0]);
       expect(proof.length).to.be.greaterThan(0);
     });
     it('should return empty list for invalid account', () => {
