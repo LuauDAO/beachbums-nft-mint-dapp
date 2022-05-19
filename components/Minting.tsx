@@ -15,6 +15,7 @@ export default function Minting() {
 
   const [message, setMessage] = useState('');
   const [connErrMsg, setConnErrMsg] = useState('');
+  const [mintFee, setMintFee] = useState('?');
   const [totalSupply, setTotalSupply] = useState('?');
   const [isPending, setIsPending] = useState(false);
   const [isMinting, setIsMinting] = useState(false);
@@ -26,8 +27,6 @@ export default function Minting() {
       const totalWei = ethers.utils.parseEther(totalMintCost).toBigInt();
       setMessage('');
       setIsPending(true);
-      debugger;
-      console.log("button clicked");
       try {
         const web3Provider = new ethers.providers.Web3Provider(
           ethereumProvider
@@ -40,14 +39,14 @@ export default function Minting() {
           ABI,
           signer
         );
-        const testaddress = "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266";
-           
-        const setMinterAdd = await contract.setMinter(testaddress);
-        console.log(setMinterAdd);
-        const transaction = await contract.mintTest();
-          //mintAmount, {
-          //value: totalWei,
-        //});
+
+        let transaction;
+        if(mintAmount > 1) {
+          transaction = await contract.mintBatch(account, mintAmount, { value: ethers.utils.parseEther(mintFee).mul(mintAmount) });
+        } else {
+          transaction = await contract.mint(account, { value: ethers.utils.parseEther(mintFee) });
+        }
+
         setIsPending(false);
         setIsMinting(true);
         await transaction.wait();
@@ -91,23 +90,24 @@ export default function Minting() {
   }, [active, chainId]);
 
   useEffect(() => {
-    async function fetchTotalSupply() {
-      const web3Provider = new ethers.providers.JsonRpcProvider(
-        rpcConfig(process.env.NEXT_PUBLIC_INFURA_KEY)
-      );
-      const contract = new ethers.Contract(
-        projectConfig.contractAddress,
-        ABI,
-        web3Provider
-      );
-      setTotalSupply((await contract.totalSupply()).toString());
+    async function fetchContractData() {
+      if(ethereumProvider) {
+        const web3Provider = new ethers.providers.Web3Provider(ethereumProvider);
+        const contract = new ethers.Contract(
+          projectConfig.contractAddress,
+          ABI,
+          web3Provider
+        );
+        setTotalSupply((await contract.totalSupply()).toString());
+        setMintFee(ethers.utils.formatEther(await contract.mintFee()));
+      } else {
+        setTotalSupply('?');
+        setMintFee('?');
+      }
     }
 
-    fetchTotalSupply();
-
-    // cleanup
-    return () => setTotalSupply('?');
-  }, []);
+    fetchContractData();
+  }, [ethereumProvider]);
 
   return (
     <>
@@ -121,7 +121,7 @@ export default function Minting() {
 
         <div className="text-center">
           <p className="text-xl">
-            Total price: {projectConfig.mintCost * mintAmount}{' '}
+            Total price: {(parseFloat(mintFee) * mintAmount).toFixed(2)}{' '}
             {projectConfig.chainName}
           </p>
           <p className="text-gray-400">(excluding gas fees)</p>

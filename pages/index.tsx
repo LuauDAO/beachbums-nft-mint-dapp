@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
-
+import Container from '../components/Container';
 import Layout from '../components/Layout';
 import Prose from '../components/Prose';
 import Minting from '../components/Minting';
@@ -9,7 +9,8 @@ import Faq from '../components/Faq';
 import Roadmap from '../components/Roadmap';
 import Team from '../components/Team';
 import projectConfig from '../config/projectConfig';
-import topImage from '../public/assets/1920x600.png';
+import topImage from '../public/assets/1920x600_cropped.png';
+import Redeem from '../components/Redeem';
 
 const Home: NextPage = () => {
   return (
@@ -17,8 +18,10 @@ const Home: NextPage = () => {
       <Head>
         <title>{projectConfig.nftName}</title>
       </Head>
-      <Image src={topImage} alt={projectConfig.nftName} />
-      <div className="bg-gray-800 py-8"  style={{backgroundColor: '#5e42a6'}} >
+      <Container>
+        <Image src={topImage} alt={projectConfig.nftName} layout="responsive"/>
+      </Container>
+      <div className="bg-gray-800 py-8" style={{backgroundColor: '#5e42a6'}} >
         <Prose>
           <h1 className="text-5xl font-bold mb-2">{projectConfig.nftName}</h1>
           <p className="text-xl">
@@ -27,17 +30,20 @@ const Home: NextPage = () => {
         </Prose>
       </div>
 
+      <div className="bg-gray-800 py-8" style={{backgroundColor: '#3e4094'}} >
+        <Prose>
+          <Redeem />
+        </Prose>
+      </div>
+
+
       <div className="py-8" style={{backgroundColor: '#5052b5'}}>
         <Prose>
           <Minting />
         </Prose>
       </div>
 
-      <div className="bg-gray-800 py-8" style={{backgroundColor: '#3e4094'}} >
-        <Prose>
-          <Faq />
-        </Prose>
-      </div>
+{/*
 
       <div className="py-8"  >
         <Prose>
@@ -49,7 +55,7 @@ const Home: NextPage = () => {
         <Prose>
           <Team />
         </Prose>
-      </div>
+      </div> */}
     </Layout>
   );
 };
