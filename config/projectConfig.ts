@@ -1,5 +1,5 @@
 const projectConfig = {
-  nftName: 'Beach Bums',
+  nftName: 'BeachBums',
   nftSymbol: 'BUMS',
   maxSupply: 700,
   maxMintAmountPerTxn: 10,
