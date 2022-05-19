@@ -19,7 +19,7 @@ const Home: NextPage = () => {
         <title>{projectConfig.nftName}</title>
       </Head>
       <Container>
-        <Image src={topImage} alt={projectConfig.nftName} layout="responsive"/>
+        <Image src={topImage} alt={projectConfig.nftName}/>
       </Container>
       <div className="bg-gray-800 py-8" style={{backgroundColor: '#5e42a6'}} >
         <Prose>
