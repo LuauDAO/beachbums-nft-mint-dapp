@@ -40,7 +40,12 @@ export default function Minting() {
           signer
         );
 
-        const transaction = await contract.mint(account, { value: ethers.utils.parseEther(mintFee) });
+        let transaction;
+        if(mintAmount > 1) {
+          transaction = await contract.mintBatch(account, mintAmount, { value: ethers.utils.parseEther(mintFee).mul(mintAmount) });
+        } else {
+          transaction = await contract.mint(account, { value: ethers.utils.parseEther(mintFee) });
+        }
 
         setIsPending(false);
         setIsMinting(true);
