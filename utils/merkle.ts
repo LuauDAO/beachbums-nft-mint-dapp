@@ -11,15 +11,21 @@ function hashAddress(account: string): Buffer {
 }
 
 export function getMerkleTree(recipients?: string[]): MerkleTree {
-  const leafs = recipients || config_recipients;
+  const leafs =
+    typeof recipients == 'undefined' ? config_recipients : recipients;
+
   leafs.forEach((a) => {
     if (!ethers.utils.isAddress(a))
       throw new Error(`Merkle Recipients: ${a} is an invalid account`);
   });
 
-  return new MerkleTree(leafs.map(hashAddress), keccak256, {
-    sortPairs: true,
-  });
+  return new MerkleTree(
+    leafs.map((account) => hashAddress(account)),
+    keccak256,
+    {
+      sortPairs: true,
+    }
+  );
 }
 
 export function computeProof(tree: MerkleTree, address: string): string[] {
