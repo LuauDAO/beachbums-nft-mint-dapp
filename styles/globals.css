@@ -9,3 +9,8 @@
     @apply text-pink-500;
   }
 }
+.bum svg {
+  width:100%;
+  max-width:150px;
+  height: auto;
+}

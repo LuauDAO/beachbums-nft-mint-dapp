@@ -8,13 +8,15 @@ import SeederAbi from "../config/abis/NounsSeeder.json";
 import rpcConfig from '../config/rpcConfig';
 import projectConfig from '../config/projectConfig';
 import { useEthereumProvider } from '../hooks/useEthereumProvider';
+import Container from './Container';
 
 export default function Inventory() {
   const { account, active, chainId } = useWeb3React();
   const { ethereumProvider } = useEthereumProvider();
-
+  const [loaded, setLoaded] = useState(false);
   const [tokenIds, setTokenIds] = useState<number[]>([]);
   const [svgs, setSvgs] = useState<string[]>([]);
+  const [nfts, setNFTs] = useState<any[]>([]);
 
   async function fetchInventory() {
       if(ethereumProvider) {
@@ -26,17 +28,26 @@ export default function Inventory() {
         const balance = await tokenContract.balanceOf(account);
         let ids = [];
         let svgs = [];
+        let nfts = [];
+        if (balance > 0) {
+          console.log("Loading NFTs...")
+        }
         for(let i = 0; i < balance; i++) {
             const tokenId = (await tokenContract.tokenOfOwnerByIndex(account, i)).toNumber();
             const seed = await tokenContract.seeds(tokenId);
-            const svg = await descriptorContract.generateSVGImage(seed);
+            const _svg = await descriptorContract.generateSVGImage(seed);
 
             ids.push(tokenId);
-            svgs.push(Buffer.from(svg, 'base64').toString());
+            let svg = Buffer.from(_svg, 'base64').toString();
+            svgs.push(svg);
+
+            let nft = { img: svg, id: tokenId };
+            nfts.push(nft);
         }
         setTokenIds(ids);
         setSvgs(svgs);
-        console.log(svgs);
+        setNFTs(nfts);
+        setLoaded(true);
       }
   }
 
@@ -46,9 +57,42 @@ export default function Inventory() {
     }
   }, [active, chainId]);
 
+  const styles = {
+    bums: {
+      display: 'inline-grid',
+      gridTemplateColumns: "repeat(3, 1fr)",
+      justifyContent: 'space-between',
+      gap: '0.5rem',
+    },
+    token: {
+      color: "rgb(236 72 153 / var(--tw-text-opacity))",
+      padding: "0.75rem 0.25rem",
+    }
+  }
+
+
+  const bums = (
+        <div style={styles.bums}>
+          {
+        nfts.map(nft => <div key={nft.id} >
+              <span style={styles.token}>ID: {nft.id}</span>
+              <div className={"bum"} dangerouslySetInnerHTML={{ __html: nft.img }}></div>
+            </div>
+            )
+          }
+        </div>
+  );
+
+  const _loading = () => {
+    if (!loaded) {
+      return (<span> Loading...</span>)
+    }
+   }
+
   return (
     <>
-        {svgs.map((img, index) => <div key={index} dangerouslySetInnerHTML={{ __html: img }}></div>)}
+      <h2 className="text-4xl mb-4">Inventory {_loading()}</h2>
+      {bums}
     </>
-  );
+  )
 }
