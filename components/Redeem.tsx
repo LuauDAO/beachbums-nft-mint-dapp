@@ -5,7 +5,7 @@ import { IconContext } from 'react-icons';
 import { FaMinusCircle, FaPlusCircle } from 'react-icons/fa';
 import { getMerkleTree, computeProof } from '../utils/merkle';
 
-import ABI from '../config/abi.json';
+import NounsTokenAbi from '../config/abis/NounsToken.json';
 import rpcConfig from '../config/rpcConfig';
 import projectConfig from '../config/projectConfig';
 import { useEthereumProvider } from '../hooks/useEthereumProvider';
@@ -33,7 +33,7 @@ export default function Redeem() {
       try {
         const web3Provider = new ethers.providers.Web3Provider(ethereumProvider);
         const signer = web3Provider.getSigner();
-        const contract = new ethers.Contract(projectConfig.contractAddress, ABI, signer);
+        const contract = new ethers.Contract(projectConfig.contractAddress.nounsToken, NounsTokenAbi, signer);
         let transaction;
         try {
           transaction = await contract.redeem(account, merkleProof);
@@ -60,7 +60,7 @@ export default function Redeem() {
   async function fetchContractData() {
     if(ethereumProvider) {
       const web3Provider = new ethers.providers.Web3Provider(ethereumProvider);
-      const contract = new ethers.Contract(projectConfig.contractAddress, ABI, web3Provider);
+      const contract = new ethers.Contract(projectConfig.contractAddress.nounsToken, NounsTokenAbi, web3Provider);
       const merkleRoot = (await contract.root()).toString();
       setContractMerkleRoot(merkleRoot);
       setIsRootMismatched(merkleTree.getHexRoot() == contractMerkleRoot);

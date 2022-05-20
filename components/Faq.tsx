@@ -15,7 +15,7 @@ export default function Faq() {
           </p>
         <h3 className="text-2xl mb-2">What is the total supply?</h3>
           <p>
-          The total supply of BeachBums is 700 NFTs with an option to increase the total supply at a later date. 500 NFTs will be available for the public mint and 200 NFTs are reserved for HodlerCon registrants with any leftover transferring to the Luau DAO for use in future events.
+          The total supply of BeachBums is 700 NFTs. 500 NFTs will be available for the public mint and 200 NFTs are reserved for HodlerCon registrants with any leftover transferring to the Luau DAO for use in future events.
           </p>
         <h3 className="text-2xl mb-2">Is there a resale fee?</h3>
           <p>

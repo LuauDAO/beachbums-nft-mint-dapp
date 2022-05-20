@@ -11,13 +11,14 @@ function hashAddress(account: string): Buffer {
 }
 
 export function getMerkleTree(recipients?: string[]): MerkleTree {
-  const leafs =
-    typeof recipients == 'undefined' ? config_recipients : recipients;
+  let leafs = typeof recipients == 'undefined' ? config_recipients : recipients;
 
   leafs.forEach((a) => {
     if (!ethers.utils.isAddress(a))
       throw new Error(`Merkle Recipients: ${a} is an invalid account`);
   });
+
+  leafs = leafs.map((account) => ethers.utils.getAddress(account));
 
   return new MerkleTree(
     leafs.map((account) => hashAddress(account)),
@@ -26,5 +27,5 @@ export function getMerkleTree(recipients?: string[]): MerkleTree {
 }
 
 export function computeProof(tree: MerkleTree, address: string): string[] {
-  return tree.getHexProof(hashAddress(address));
+  return tree.getHexProof(hashAddress(ethers.utils.getAddress(address)));
 }

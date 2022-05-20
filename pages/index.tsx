@@ -2,6 +2,7 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Container from '../components/Container';
+import Inventory from '../components/Inventory';
 import Layout from '../components/Layout';
 import Prose from '../components/Prose';
 import Minting from '../components/Minting';
@@ -40,6 +41,12 @@ const Home: NextPage = () => {
       <div className="py-8" style={{backgroundColor: '#5052b5'}}>
         <Prose>
           <Minting />
+        </Prose>
+      </div>
+
+      <div className="py-8" style={{backgroundColor: '#3e4094'}}>
+        <Prose>
+          <Inventory />
         </Prose>
       </div>
 
