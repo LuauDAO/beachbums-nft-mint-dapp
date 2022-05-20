@@ -48,7 +48,7 @@ export default function Inventory() {
 
   return (
     <>
-        {svgs.map(img => <div dangerouslySetInnerHTML={{ __html: img }}></div>)}
+        {svgs.map((img, index) => <div key={index} dangerouslySetInnerHTML={{ __html: img }}></div>)}
     </>
   );
 }
