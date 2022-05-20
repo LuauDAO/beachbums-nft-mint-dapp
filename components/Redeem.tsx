@@ -66,7 +66,7 @@ export default function Redeem() {
   function fetchMerkleProof() {
     const proof = computeProof(merkleTree, account || '');
     setIsEligible(proof.length > 0);
-    console.log(isEligible? "Account is eligible to redeem a free Beach Bum" : "Account is not eligible to redeem a free Beach Bum");
+    console.log(isEligible? "Account is eligible to redeem a free BeachBum" : "Account is not eligible to redeem a free Beach Bum");
     setMerkleProof(proof);
   }
 
