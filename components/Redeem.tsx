@@ -5,7 +5,7 @@ import { IconContext } from 'react-icons';
 import { FaMinusCircle, FaPlusCircle } from 'react-icons/fa';
 import { getMerkleTree, computeProof } from '../utils/merkle';
 
-import ABI from '../config/abi.json';
+import NounsTokenAbi from '../config/abis/NounsToken.json';
 import rpcConfig from '../config/rpcConfig';
 import projectConfig from '../config/projectConfig';
 import { useEthereumProvider } from '../hooks/useEthereumProvider';
@@ -15,27 +15,32 @@ export default function Redeem() {
   const { ethereumProvider } = useEthereumProvider();
 
   const [message, setMessage] = useState('');
-  const [connErrMsg, setConnErrMsg] = useState('');
-  const [totalSupply, setTotalSupply] = useState('?');
+  const [errMsg, setErrMsg] = useState('');
   const [isPending, setIsPending] = useState(false);
   const [isRedeeming, setIsRedeeming] = useState(false);
   const [redeemAmount, setRedeemAmount] = useState(1);
   const [isEligible, setIsEligible] = useState(false);
   const [contractMerkleRoot, setContractMerkleRoot] = useState("");
   const [merkleProof, setMerkleProof] = useState<string[]>([]);
+  const [isRootMismatched, setIsRootMismatched] = useState(false);
   const merkleTree = getMerkleTree();
 
   async function redeemNFTs() {
     if (account && ethereumProvider) {
       setMessage('');
+      console.log("Redeeming Beach Bum")
       setIsPending(true);
       try {
         const web3Provider = new ethers.providers.Web3Provider(ethereumProvider);
         const signer = web3Provider.getSigner();
-        const contract = new ethers.Contract(projectConfig.contractAddress, ABI, signer);
-        const setRedeemerAdd = await contract.setRedeemer(account);
-        console.log(setRedeemerAdd);
-        const transaction = await contract.redeemTest();
+        const contract = new ethers.Contract(projectConfig.contractAddress.nounsToken, NounsTokenAbi, signer);
+        let transaction;
+        try {
+          transaction = await contract.redeem(account, merkleProof);
+        } catch(receipt) {
+          setErrMsg(Object(receipt).data.message);
+          throw receipt;
+        }
         setIsPending(false);
         setIsRedeeming(true);
         await transaction.wait();
@@ -55,9 +60,10 @@ export default function Redeem() {
   async function fetchContractData() {
     if(ethereumProvider) {
       const web3Provider = new ethers.providers.Web3Provider(ethereumProvider);
-      const contract = new ethers.Contract(projectConfig.contractAddress, ABI, web3Provider);
+      const contract = new ethers.Contract(projectConfig.contractAddress.nounsToken, NounsTokenAbi, web3Provider);
       const merkleRoot = (await contract.root()).toString();
       setContractMerkleRoot(merkleRoot);
+      setIsRootMismatched(merkleTree.getHexRoot() == contractMerkleRoot);
     }
   }
 
@@ -69,21 +75,23 @@ export default function Redeem() {
 
   useEffect(() => {
     if (!active) {
-      setConnErrMsg('Not connected to your wallet.');
+      setErrMsg('Not connected to your wallet.');
     } else {
       fetchContractData();
       fetchMerkleProof();
       if (chainId !== projectConfig.chainId) {
-        setConnErrMsg(`Change the network to ${projectConfig.networkName}.`);
+        setErrMsg(`Change the network to ${projectConfig.networkName}.`);
       } else {
-        if(!isEligible) {
-          setConnErrMsg('This address is not eligible to redeem. Public mint is below!');
+        if(isRootMismatched) {
+          setErrMsg('BeachBum redemption is out of order right now.');
+        } else if(!isEligible) {
+          setErrMsg('This address is not eligible to redeem. Public mint is below!');
         } else {
-          setConnErrMsg('');
+          setErrMsg('');
         }
       }
     }
-  }, [active, chainId]);
+  }, [active, chainId, account, isEligible]);
 
   return (
     <>
@@ -94,11 +102,11 @@ export default function Redeem() {
         style={{ backgroundColor: '#5e42a6' }}
       >
         <div className="flex justify-center">
-          <p className="text-xl">Check if you are eligible to redeem a Beach Bum</p>
+          <p className="text-xl">Check if you are eligible to redeem a BeachBum</p>
         </div>
 
         <div className="flex justify-center">
-          {active && !connErrMsg ? (
+          {active && !errMsg ? (
             <>
               {isPending || isRedeeming ? (
                 <button
@@ -135,6 +143,7 @@ export default function Redeem() {
                   type="button"
                   className={`rounded px-4 py-2 bg-blue-700 hover:bg-blue-600 font-bold w-40`}
                   onClick={redeemNFTs}
+                  disabled={!isEligible}
                 >
                   Redeem
                 </button>
@@ -153,13 +162,7 @@ export default function Redeem() {
         </div>
 
         {message && <div className="text-green-500 text-center">{message}</div>}
-        {connErrMsg && <div className="text-red-500 text-center">{connErrMsg}</div>}
-      </div>
-
-      <div className="text-gray-400 mt-2">
-        Please make sure you are connected to the correct address and the correct network (
-        {projectConfig.networkName}) before purchasing. The operation cannot be undone after
-        purchase.
+        {errMsg && <div className="text-red-500 text-center">{errMsg}</div>}
       </div>
     </>
   );

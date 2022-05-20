@@ -4,7 +4,7 @@ import { ethers } from 'ethers';
 import { IconContext } from 'react-icons';
 import { FaMinusCircle, FaPlusCircle } from 'react-icons/fa';
 
-import ABI from '../config/abi.json';
+import NounsTokenAbi from '../config/abis/NounsToken.json';
 import rpcConfig from '../config/rpcConfig';
 import projectConfig from '../config/projectConfig';
 import { useEthereumProvider } from '../hooks/useEthereumProvider';
@@ -35,8 +35,8 @@ export default function Minting() {
         const signer = web3Provider.getSigner();
         console.log(signer);
         const contract = new ethers.Contract(
-          projectConfig.contractAddress,
-          ABI,
+          projectConfig.contractAddress.nounsToken,
+          NounsTokenAbi,
           signer
         );
 
@@ -94,8 +94,8 @@ export default function Minting() {
       if(ethereumProvider) {
         const web3Provider = new ethers.providers.Web3Provider(ethereumProvider);
         const contract = new ethers.Contract(
-          projectConfig.contractAddress,
-          ABI,
+          projectConfig.contractAddress.nounsToken,
+          NounsTokenAbi,
           web3Provider
         );
         setTotalSupply((await contract.totalSupply()).toString());
