@@ -15,14 +15,14 @@ export default function Redeem() {
   const { ethereumProvider } = useEthereumProvider();
 
   const [message, setMessage] = useState('');
-  const [connErrMsg, setConnErrMsg] = useState('');
-  const [totalSupply, setTotalSupply] = useState('?');
+  const [errMsg, setErrMsg] = useState('');
   const [isPending, setIsPending] = useState(false);
   const [isRedeeming, setIsRedeeming] = useState(false);
   const [redeemAmount, setRedeemAmount] = useState(1);
   const [isEligible, setIsEligible] = useState(false);
   const [contractMerkleRoot, setContractMerkleRoot] = useState("");
   const [merkleProof, setMerkleProof] = useState<string[]>([]);
+  const [isRootMismatched, setIsRootMismatched] = useState(false);
   const merkleTree = getMerkleTree();
 
   async function redeemNFTs() {
@@ -33,11 +33,14 @@ export default function Redeem() {
       try {
         const web3Provider = new ethers.providers.Web3Provider(ethereumProvider);
         const signer = web3Provider.getSigner();
-        console.log("Contract Address: ", projectConfig.contractAddress)
         const contract = new ethers.Contract(projectConfig.contractAddress, ABI, signer);
-        console.log("Calling Redeem");
-        const proof = computeProof(merkleTree, account || '');
-        const transaction = await contract.redeem(account, proof);
+        let transaction;
+        try {
+          transaction = await contract.redeem(account, merkleProof);
+        } catch(receipt) {
+          setErrMsg(Object(receipt).data.message);
+          throw receipt;
+        }
         setIsPending(false);
         setIsRedeeming(true);
         await transaction.wait();
@@ -60,29 +63,31 @@ export default function Redeem() {
       const contract = new ethers.Contract(projectConfig.contractAddress, ABI, web3Provider);
       const merkleRoot = (await contract.root()).toString();
       setContractMerkleRoot(merkleRoot);
+      setIsRootMismatched(merkleTree.getHexRoot() == contractMerkleRoot);
     }
   }
 
   function fetchMerkleProof() {
     const proof = computeProof(merkleTree, account || '');
     setIsEligible(proof.length > 0);
-    console.log(isEligible? "Account is eligible to redeem a free BeachBum" : "Account is not eligible to redeem a free Beach Bum");
     setMerkleProof(proof);
   }
 
   useEffect(() => {
     if (!active) {
-      setConnErrMsg('Not connected to your wallet.');
+      setErrMsg('Not connected to your wallet.');
     } else {
       fetchContractData();
       fetchMerkleProof();
       if (chainId !== projectConfig.chainId) {
-        setConnErrMsg(`Change the network to ${projectConfig.networkName}.`);
+        setErrMsg(`Change the network to ${projectConfig.networkName}.`);
       } else {
-        if(!isEligible) {
-          setConnErrMsg('This address is not eligible to redeem. Public mint is below!');
+        if(isRootMismatched) {
+          setErrMsg('BeachBum redemption is out of order right now.');
+        } else if(!isEligible) {
+          setErrMsg('This address is not eligible to redeem. Public mint is below!');
         } else {
-          setConnErrMsg('');
+          setErrMsg('');
         }
       }
     }
@@ -101,7 +106,7 @@ export default function Redeem() {
         </div>
 
         <div className="flex justify-center">
-          {active && !connErrMsg ? (
+          {active && !errMsg ? (
             <>
               {isPending || isRedeeming ? (
                 <button
@@ -138,6 +143,7 @@ export default function Redeem() {
                   type="button"
                   className={`rounded px-4 py-2 bg-blue-700 hover:bg-blue-600 font-bold w-40`}
                   onClick={redeemNFTs}
+                  disabled={!isEligible}
                 >
                   Redeem
                 </button>
@@ -156,13 +162,7 @@ export default function Redeem() {
         </div>
 
         {message && <div className="text-green-500 text-center">{message}</div>}
-        {connErrMsg && <div className="text-red-500 text-center">{connErrMsg}</div>}
-      </div>
-
-      <div className="text-gray-400 mt-2">
-        Please make sure you are connected to the correct address and the correct network (
-        {projectConfig.networkName}) before purchasing. The operation cannot be undone after
-        purchase.
+        {errMsg && <div className="text-red-500 text-center">{errMsg}</div>}
       </div>
     </>
   );
