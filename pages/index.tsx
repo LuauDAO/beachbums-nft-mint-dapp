@@ -44,21 +44,19 @@ const Home: NextPage = () => {
         </Prose>
       </div>
 
+      <div className="py-8" style={{backgroundColor: '#5e42a6'}}>
+        <Prose>
+          <Inventory />
+        </Prose>
+      </div>
+
       <div className="bg-gray-800 py-8" style={{backgroundColor: '#3e4094'}} >
       <Prose>
         <Faq />
       </Prose>
       </div>
 
-      <div className="py-8" style={{backgroundColor: '#3e4094'}}>
-        <Prose>
-          <Inventory />
-        </Prose>
-      </div>
-
-{/*
-
-      <div className="py-8"  >
+      <div className="py-8" style={{backgroundColor: '#5052b5'}}>
         <Prose>
           <Roadmap />
         </Prose>
