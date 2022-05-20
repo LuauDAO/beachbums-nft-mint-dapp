@@ -102,7 +102,7 @@ export default function Redeem() {
         style={{ backgroundColor: '#5e42a6' }}
       >
         <div className="flex justify-center">
-          <p className="text-xl">Check if you are eligible to redeem a Beach Bum</p>
+          <p className="text-xl">Check if you are eligible to redeem a BeachBum</p>
         </div>
 
         <div className="flex justify-center">
