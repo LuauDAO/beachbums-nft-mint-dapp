@@ -17,6 +17,7 @@ export default function Inventory() {
   const [tokenIds, setTokenIds] = useState<number[]>([]);
   const [svgs, setSvgs] = useState<string[]>([]);
   const [nfts, setNFTs] = useState<any[]>([]);
+  const [isListenerSet, setIsListenerSet] = useState(false);
 
   async function fetchInventory() {
       if(ethereumProvider) {
@@ -54,6 +55,13 @@ export default function Inventory() {
   useEffect(() => {
     if(active && ethereumProvider) {
         fetchInventory();
+        if(!isListenerSet) {
+          const web3Provider = new ethers.providers.Web3Provider(ethereumProvider);
+          const signer = web3Provider.getSigner();
+          const tokenContract = new ethers.Contract(projectConfig.contractAddress.nounsToken, TokenAbi, signer);
+          tokenContract.on("BeachBumCreated", () => {fetchInventory()});
+          setIsListenerSet(true);
+        }
     }
   }, [active, chainId]);
 
