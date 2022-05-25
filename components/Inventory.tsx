@@ -17,10 +17,12 @@ export default function Inventory() {
   const [tokenIds, setTokenIds] = useState<number[]>([]);
   const [svgs, setSvgs] = useState<string[]>([]);
   const [nfts, setNFTs] = useState<any[]>([]);
+  const [isFetchingInventory, setIsFetchingInventory] = useState(false);
   const [isListenerSet, setIsListenerSet] = useState(false);
 
   async function fetchInventory() {
-      if(ethereumProvider) {
+      if(ethereumProvider && !isFetchingInventory) {
+        setIsFetchingInventory(true);
         const web3Provider = new ethers.providers.Web3Provider(ethereumProvider);
         const signer = web3Provider.getSigner();
         const tokenContract = new ethers.Contract(projectConfig.contractAddress.nounsToken, TokenAbi, signer);
@@ -49,6 +51,7 @@ export default function Inventory() {
         setSvgs(svgs);
         setNFTs(nfts);
         setLoaded(true);
+        setIsFetchingInventory(false);
       }
   }
 
