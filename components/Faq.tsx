@@ -23,7 +23,11 @@ export default function Faq() {
           </p>
         <h3 className="text-2xl mb-2">Any special shout outs?</h3>
           <p>
-          Beach Bums were developed with consultation from LookingForOwls of ShuffleDAO with radical artwork from the mind of Logic_Beach. 
+          Beach Bums were spearheaded by <a href="https://twitter.com/wizardofhex" target="_new">Woh</a> with consultation from <a href="https://twitter.com/0xLFO" target="_new">LookingForOwls</a> of <a href="https://twitter.com/shuffledao" target="_new">ShuffleDAO</a> with radical artwork from the mind of <a href="https://twitter.com/Logic_Beach" target="_new">Logic_Beach</a>. 
+          </p>
+        <h3 className="text-2xl mb-2">Don&apos;t these NFTs look familiar?</h3>
+          <p>
+          Yes! They&apos;re based on the <a href="https://nouns.wtf/" target="_new">Nouns protocol</a> using the CC0 licensing. This means that all of the metadata is stored on chain and all BeachBum traits have an equal rarity with randomness provided by Ethereum block hashes. 
           </p>
         </div>
       </div>
