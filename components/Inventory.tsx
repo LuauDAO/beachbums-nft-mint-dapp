@@ -21,7 +21,7 @@ export default function Inventory() {
   const [isListenerSet, setIsListenerSet] = useState(false);
 
   async function fetchInventory() {
-      if(ethereumProvider && !isFetchingInventory) {
+      if(ethereumProvider) {
         setIsFetchingInventory(true);
         const web3Provider = new ethers.providers.Web3Provider(ethereumProvider);
         const signer = web3Provider.getSigner();
@@ -62,7 +62,7 @@ export default function Inventory() {
           const web3Provider = new ethers.providers.Web3Provider(ethereumProvider);
           const signer = web3Provider.getSigner();
           const tokenContract = new ethers.Contract(projectConfig.contractAddress.nounsToken, TokenAbi, signer);
-          tokenContract.on("BeachBumCreated", () => {fetchInventory()});
+          tokenContract.on("BeachBumCreated", () => {if(!isFetchingInventory) fetchInventory()});
           setIsListenerSet(true);
         }
     }
