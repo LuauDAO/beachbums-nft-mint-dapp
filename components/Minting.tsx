@@ -31,9 +31,7 @@ export default function Minting() {
         const web3Provider = new ethers.providers.Web3Provider(
           ethereumProvider
         );
-        console.log(web3Provider);
         const signer = web3Provider.getSigner();
-        console.log(signer);
         const contract = new ethers.Contract(
           projectConfig.contractAddress.nounsToken,
           NounsTokenAbi,
