@@ -26,7 +26,7 @@ const Home: NextPage = () => {
         <Prose>
           <h1 className="text-5xl font-bold mb-2">{projectConfig.nftName}</h1>
           <p className="text-xl">
-          Meet the BeachBums, the newest residents of the tropical metaverse and your key to shaping the future of HodlerCon. Collect your own BeachBum NFT when you register for HodlerCon 2022 and are added to the whitelist for a no-fee mint. There is a limited supply of 700 BeachBums with a mint cost for non-HodlerCon attendees of 0.1 ETH. 100% of art assets are stored on-chain for max decentralization. Each BeachBum provides you a vote to shape the future of Luau DAO and it&apos;s upcoming HodlerCon events.
+          Meet the BeachBums, the newest residents of the tropical metaverse and your key to shaping the future of HodlerCon. Collect your own BeachBum NFT when you register for HodlerCon 2022 and are added to the whitelist for a no-fee mint. There is a limited supply of 700 BeachBums with a mint cost for non-HodlerCon attendees of 0.1 ETH. 100% of art assets are stored on-chain for max decentralization. Each BeachBum provides you a vote to shape the future of Luau DAO and its upcoming HodlerCon events.
           </p>
         </Prose>
       </div>
