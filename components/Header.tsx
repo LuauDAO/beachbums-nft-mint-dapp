@@ -10,7 +10,6 @@ import Container from './Container';
 import NextLink from './NextLink';
 import projectConfig from '../config/projectConfig';
 import { injected } from '../utils/wallet/connectors';
-import Logo from '../public/assets/logo.png';
 
 const ReactTooltip = dynamic(() => import('react-tooltip'), {
   ssr: false,
@@ -40,8 +39,8 @@ export default function Header() {
           <div className="flex justify-between items-center">
             <NextLink href="/" className="text-2xl font-bold text-white">
               <span className="flex items-center">
-                <Image
-                  src={Logo}
+              <Image
+                  src="/beachbums/assets/logo.png"
                   alt={projectConfig.nftName}
                   width={35}
                   height={35}

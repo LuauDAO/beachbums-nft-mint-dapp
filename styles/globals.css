@@ -8,6 +8,10 @@
   h3 {
     @apply text-pink-500;
   }
+
+  p a {
+    @apply underline decoration-dotted;
+  }
 }
 .bum svg {
   width:100%;

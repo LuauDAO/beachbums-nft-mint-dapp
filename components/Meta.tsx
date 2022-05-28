@@ -9,7 +9,7 @@ type Props = {
 
 const meta = {
   description: `${projectConfig.nftName} is an NFT collection of 700 unique characters.`,
-  ogImagePath: '/assets/card-image.png',
+  ogImagePath: '/beachbums/assets/card-image.png',
 };
 
 export default function Meta({ pageTitle }: Props) {
@@ -27,31 +27,31 @@ export default function Meta({ pageTitle }: Props) {
       <link
         rel="apple-touch-icon"
         sizes="180x180"
-        href="/favicon/apple-touch-icon.png"
+        href="/beachbums/favicon/apple-touch-icon.png"
       />
       <link
         rel="icon"
         type="image/png"
         sizes="32x32"
-        href="/favicon/favicon-32x32.png"
+        href="/beachbums/favicon/favicon-32x32.png"
       />
       <link
         rel="icon"
         type="image/png"
         sizes="16x16"
-        href="/favicon/favicon-16x16.png"
+        href="/beachbums/favicon/favicon-16x16.png"
       />
-      <link rel="manifest" href="/favicon/site.webmanifest" />
+      <link rel="manifest" href="/beachbums/favicon/site.webmanifest" />
       <link
         rel="mask-icon"
-        href="/favicon/safari-pinned-tab.svg"
+        href="/beachbums/favicon/safari-pinned-tab.svg"
         color="#5bbad5"
       />
-      <link rel="shortcut icon" href="/favicon/favicon.ico" />
+      <link rel="shortcut icon" href="/beachbums/favicon/favicon.ico" />
       <meta name="msapplication-TileColor" content="#ffc40d" />
-      <meta name="msapplication-config" content="/favicon/browserconfig.xml" />
+      <meta name="msapplication-config" content="/beachbums/favicon/browserconfig.xml" />
       <meta name="theme-color" content="#ffffff" />
-      <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
+      <link rel="alternate" type="application/rss+xml" href="/beachbums/feed.xml" />
       <meta name="description" content={meta.description} key="description" />
       <meta property="og:url" content={ogUrl} />
       <meta property="og:type" content={ogType} />

@@ -10,7 +10,6 @@ import Faq from '../components/Faq';
 import Roadmap from '../components/Roadmap';
 import Team from '../components/Team';
 import projectConfig from '../config/projectConfig';
-import topImage from '../public/assets/1920x600_cropped.png';
 import Redeem from '../components/Redeem';
 
 const Home: NextPage = () => {
@@ -20,7 +19,7 @@ const Home: NextPage = () => {
         <title>{projectConfig.nftName}</title>
       </Head>
       <Container>
-        <Image src={topImage} alt={projectConfig.nftName}/>
+        <Image src="/beachbums/assets/1920x600_cropped.png" alt={projectConfig.nftName} layout="raw" style={{display:'inline-block'}} />
       </Container>
       <div className="bg-gray-800 py-8" style={{backgroundColor: '#5e42a6'}} >
         <Prose>
