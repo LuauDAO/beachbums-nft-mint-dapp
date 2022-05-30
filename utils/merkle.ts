@@ -1,7 +1,8 @@
 import { MerkleTree } from 'merkletreejs';
 import keccak256 from 'keccak256';
-import config_recipients from '../config/recipients.json';
 import { ethers } from 'ethers';
+import projectConfig from '../config/projectConfig';
+import axios from 'axios';
 
 function hashAddress(account: string): Buffer {
   return Buffer.from(
@@ -10,9 +11,25 @@ function hashAddress(account: string): Buffer {
   );
 }
 
-export function getMerkleTree(recipients?: string[]): MerkleTree {
-  let leafs = typeof recipients == 'undefined' ? config_recipients : recipients;
+export async function fetchRecipients(): Promise<string[]> {
+  try {
+    const res = await axios({
+      method: 'get',
+      url: projectConfig.recipientList,
+      responseType: 'json',
+    });
+    if (res.status == 200) {
+      return res.data;
+    } else {
+      throw new Error('Failed to fetch tree');
+    }
+  } catch (e) {
+    console.log('failed to fetch recipients');
+    throw e;
+  }
+}
 
+export function getMerkleTree(leafs: string[]): MerkleTree {
   leafs.forEach((a) => {
     if (!ethers.utils.isAddress(a))
       throw new Error(`Merkle Recipients: ${a} is an invalid account`);

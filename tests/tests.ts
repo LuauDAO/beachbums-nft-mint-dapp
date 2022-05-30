@@ -12,10 +12,6 @@ describe('Merkle Tree', () => {
       expect(tree.getLeafCount()).to.eq(2);
     });
 
-    it('should return merkle tree from loaded file', () => {
-      expect(() => getMerkleTree()).to.not.throw();
-    });
-
     it('should throw trying to create merkle tree from invalid list of accounts', () => {
       expect(() => getMerkleTree(['0x21', 'foobar'])).to.throw();
     });

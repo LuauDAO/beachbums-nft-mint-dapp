@@ -3,12 +3,13 @@ import { useWeb3React } from '@web3-react/core';
 import { ethers } from 'ethers';
 import { IconContext } from 'react-icons';
 import { FaMinusCircle, FaPlusCircle } from 'react-icons/fa';
-import { getMerkleTree, computeProof } from '../utils/merkle';
+import { getMerkleTree, computeProof, fetchRecipients } from '../utils/merkle';
 
 import NounsTokenAbi from '../config/abis/NounsToken.json';
 import rpcConfig from '../config/rpcConfig';
 import projectConfig from '../config/projectConfig';
 import { useEthereumProvider } from '../hooks/useEthereumProvider';
+import MerkleTree from 'merkletreejs';
 
 export default function Redeem() {
   const { account, active, chainId } = useWeb3React();
@@ -20,10 +21,10 @@ export default function Redeem() {
   const [isRedeeming, setIsRedeeming] = useState(false);
   const [redeemAmount, setRedeemAmount] = useState(1);
   const [isEligible, setIsEligible] = useState(false);
+  const [merkleTree, setMerkleTree] = useState<MerkleTree>();
   const [contractMerkleRoot, setContractMerkleRoot] = useState("");
   const [merkleProof, setMerkleProof] = useState<string[]>([]);
   const [isRootMismatched, setIsRootMismatched] = useState(false);
-  const merkleTree = getMerkleTree();
 
   async function redeemNFTs() {
     if (account && ethereumProvider) {
@@ -63,22 +64,32 @@ export default function Redeem() {
       const contract = new ethers.Contract(projectConfig.contractAddress.nounsToken, NounsTokenAbi, web3Provider);
       const merkleRoot = (await contract.root()).toString();
       setContractMerkleRoot(merkleRoot);
-      setIsRootMismatched(merkleTree.getHexRoot() == contractMerkleRoot);
+      if(merkleTree) {
+        setIsRootMismatched(merkleTree.getHexRoot() == contractMerkleRoot);
+      }
     }
   }
 
-  function fetchMerkleProof() {
-    const proof = computeProof(merkleTree, account || '');
+  async function fetchMerkleTree(account: string) {
+    const recipients = await fetchRecipients();
+    const merkleTree = getMerkleTree(recipients);
+    setMerkleTree(merkleTree);
+    const proof = computeProof(merkleTree, account);
     setIsEligible(proof.length > 0);
     setMerkleProof(proof);
   }
+
+  useEffect(() => {
+    if(!merkleTree && active && account) {
+      fetchMerkleTree(account);
+    }
+  }, [active, account]);
 
   useEffect(() => {
     if (!active) {
       setErrMsg('Not connected to your wallet.');
     } else {
       fetchContractData();
-      fetchMerkleProof();
       if (chainId !== projectConfig.chainId) {
         setErrMsg(`Change the network to ${projectConfig.networkName}.`);
       } else {

@@ -5,8 +5,13 @@ const projectConfig = {
   maxSupply: 700,
   maxMintAmountPerTxn: 10,
   mintCost: process.env.NODE_ENV === 'production' ? 0.1 : 0.1,
+  recipientList:
+    process.env.NODE_ENV === 'production'
+      ? 'https://raw.githubusercontent.com/LuauDAO/nouns-monorepo/master/packages/nouns-contracts/files/recipients.json'
+      : '',
 
-  networkName: process.env.NODE_ENV === 'production' ? 'Ethereum mainnet' : 'hardhat',
+  networkName:
+    process.env.NODE_ENV === 'production' ? 'Ethereum mainnet' : 'hardhat',
 
   chainName: 'ETH',
 
